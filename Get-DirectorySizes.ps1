@@ -1,5 +1,5 @@
 # Define the target directory by replacing the path of your desired parent directory
-$targetDirectory = 'C:\path\to\your\directory'
+$targetDirectory = Read-Host -Prompt "Enter the target directory path"
 
 # Function to calculate the size of a directory
 function Get-DirectorySize {
@@ -33,13 +33,28 @@ foreach ($dir in $directories) {
 # Sort the directories by size in descending order
 $sortedDirectories = $directorySizes | Sort-Object -Property SizeInBytes -Descending
 
+# To convert this script to an executable:
+
+# 1. Install PS2EXE using Install-Module -Name ps2exe -Scope CurrentUser
+if (!(Get-Module -ListAvailable -Name PS2EXE)) {
+    Write-Host "Installing PS2EXE module..."
+    Install-Module -Name PS2EXE -Scope CurrentUser -Force
+}
+
+# Defining paths
+$inputScript = "Get-DirectorySizes.ps1"  # Replace with your script name
+$outputExe = "outputapp.exe"    # Replace with desired exe name
+
+# 2. Run the following command in PowerShell:
+#    Invoke-PS2EXE -InputFile 'Path\To\YourScript.ps1' -OutputFile 'Path\To\YourExecutable.exe'
+Write-Host "Converting script to executable..."
+Invoke-PS2EXE -InputFile $inputScript -OutputFile $outputExe
+
+##EDITED
+
 # Display the sorted list
-$sortedDirectories | Format-Table -Property Path, SizeInMB -AutoSize
+#$sortedDirectories | Format-Table -Property Path, SizeInMB -AutoSize
 
 # Optional: Save results to a CSV file
 $sortedDirectories | Export-Csv -Path "$targetDirectory\DirectorySizes.csv" -NoTypeInformation
 
-# To convert this script to an executable:
-# 1. Install PS2EXE using Install-Module -Name ps2exe -Scope CurrentUser
-# 2. Run the following command in PowerShell:
-#    Invoke-PS2EXE -InputFile 'Path\To\YourScript.ps1' -OutputFile 'Path\To\YourExecutable.exe'
