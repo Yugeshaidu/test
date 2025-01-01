@@ -1,5 +1,5 @@
 # Define the target directory
-$targetDirectory = 'C:\Users\naidu\Desktop\project'
+$targetDirectory = 'C:\Users\naidu\Desktop\ocr_model'
 
 # Function to calculate the size of a directory
 function Get-DirectorySize {
